@@ -29,12 +29,30 @@ While the script is running you should keep track of how long each passenger wai
         const skyscraper = new Building("Skyscraper Nano", -1, 10, {elevator1, elevator2});
 
         //Create 100 passengers
+        const passanger = createPassager();
         const start_floor, end_floor = getRandomIntPair(min_floor, max_floor);
         const nearestElevator = skyscraper.findNearestElevator(start_floor);
         const requestTime = Date.now();
         
         //create 1 passanger - randomly choose start floor
         travelTime = nearestElevator.Move(end_floor);
+
+        const promise3 = new Promise((resolve, reject) => {
+            //create passanger
+            //call elevator in building
+            elevator = skyscraper.findNearestElevator(start_floor, end_floor);
+
+            if (elevator instanceof Array) {
+
+            }
+            
+            setTimeout(resolve, 100, 'foo');
+          });
+
+        //const tasks   = asyncThingsToDo.map([promise3]]); // Run all our tasks in parallel.
+const results = await Promise.all([promise3]);     // Gather up the results.
+results.forEach(x => console.log(x)); 
+
         //When nearest Elevator is done, call it to the floor
         // Embark
         // Travel to destination
@@ -47,6 +65,10 @@ While the script is running you should keep track of how long each passenger wai
         const timeElapsed = Date.now() - requestTime;
         
      }
+ }
+
+ function createPassager() {
+
  }
 
  function randomInt(min, max) {

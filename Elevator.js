@@ -22,6 +22,8 @@ class Elevator {
 
         this.door_is_closed = true;
         this.door_is_blocked = false;
+
+        this.is_busy = false;
     }
 
     OpenDoors() {
@@ -73,7 +75,10 @@ class Elevator {
         if (destination_floor > this.max_floor || destination_floor < this.min_floor)
             throw "Floor outside of reach";
 
+        this.busy = true;
         this.dest_floor = destination_floor;
-        return Math.abs(destination_floor - this.current_floor);
+        const travelTime = Math.abs(destination_floor - this.current_floor);
+        setTimeout(function(){ this.is_busy = false; }, travelTime * 1000);
+        return travelTime;
     }
 }
