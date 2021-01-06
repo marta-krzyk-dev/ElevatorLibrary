@@ -6,6 +6,7 @@ class Elevator {
 
         this.name = name;
         this.current_floor = current_floor;
+        this.dest_floor = current_floor;
 
         if (isNaN(min_floor) || isNaN(max_floor) || isNaN(current_floor))
             throw "Invalid floor variable is not a number"
@@ -72,6 +73,7 @@ class Elevator {
         if (destination_floor > this.max_floor || destination_floor < this.min_floor)
             throw "Floor outside of reach";
 
+        this.dest_floor = destination_floor;
         return Math.abs(destination_floor - this.current_floor);
     }
 }

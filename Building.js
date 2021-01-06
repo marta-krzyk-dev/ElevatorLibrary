@@ -7,7 +7,7 @@ class Building {
     }
 
     findNearestElevator(floor) {
-        
+
         if (floor < this.min_floor || floor > this.max_floor)
             throw `There is no floor ${floor} in the ${this.name} building.`
 
@@ -15,6 +15,8 @@ class Building {
         if (max === 0)
             throw "There are no elevators in the building"
 
+        //it's about time and distance!!
+        //TODO: include time, check if elevator is occupied or not
         let min = Math.abs(this.elevators[0].dest_floor - floor);
         let index = 0;
         for (i = 1; i < max; ++i) {
