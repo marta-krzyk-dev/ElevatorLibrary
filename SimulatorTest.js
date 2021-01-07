@@ -11,6 +11,10 @@ While the script is running you should keep track of how long each passenger wai
   and they will be requesting to go in random directions (up or down) to random floors, 
   at random times. */
 
+//import ElevatorSimulator from './Simulator'; 
+const Simulate = require("./Simulator");
+//import {Simulate} from './Simulator'; 
+
 const numberOfPassangers = 100;
 const simulationTimeInSec = 180;
 
@@ -19,7 +23,8 @@ const simulationTimeInSec = 180;
 //2. Request Time
 //3. Destination floor
 //4. Waiting + travel time
+console.log(Simulate);
+results = Simulate(numberOfPassangers, simulationTimeInSec);
 
-results = ElevatorSimulator.Simulate(numberOfPassangers, simulationTimeInSec);
-
+console.log("END OF SIMULATION");
 //Assert that 

@@ -11,9 +11,8 @@ While the script is running you should keep track of how long each passenger wai
   and they will be requesting to go in random directions (up or down) to random floors, 
   at random times. */
 
- class ElevatorSimulator {
 
-     static Simulate(time, number_of_passengers) {
+     async function Simulate(time, number_of_passengers) {
 
         //Validate time
         if (isNaN(time) || isNaN(number_of_passengers))
@@ -29,16 +28,17 @@ While the script is running you should keep track of how long each passenger wai
         const skyscraper = new Building("Skyscraper Nano", -1, 10, {elevator1, elevator2});
 
         //Create 100 passengers
-        const passanger = createPassager();
-        const start_floor, end_floor = getRandomIntPair(min_floor, max_floor);
-        const nearestElevator = skyscraper.findNearestElevator(start_floor);
-        const requestTime = Date.now();
+       
         
         //create 1 passanger - randomly choose start floor
         travelTime = nearestElevator.Move(end_floor);
 
         const promise3 = new Promise((resolve, reject) => {
-            //create passanger
+            //create passanger 
+            //const passanger = createPassager();
+        start_floor, end_floor = getRandomIntPair(min_floor, max_floor);
+        const nearestElevator = skyscraper.findNearestElevator(start_floor);
+        const requestTime = Date.now();
             //call elevator in building
             elevator = skyscraper.findNearestElevator(start_floor, end_floor);
 
@@ -65,7 +65,7 @@ results.forEach(x => console.log(x));
         const timeElapsed = Date.now() - requestTime;
         
      }
- }
+
 
  function createPassager() {
 
@@ -79,10 +79,12 @@ results.forEach(x => console.log(x));
 
 function getRandomIntPair(min, max) {
     const a = randomInt(min, max);
-    const b;
+    let b;
     do {
         b = randomInt(min, max);
     } while (a === b && min !== max)
 
     return a, b;
  }
+
+ module.exports = Simulate;

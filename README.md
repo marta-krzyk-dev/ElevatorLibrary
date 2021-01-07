@@ -6,7 +6,13 @@ TODO:
 - [ ] Implement building class (number of floors, 1-2 buttons for each floor)
 - [ ] Have closed_door bool in Elevator class?
 - [ ] Make props private in Elevator
- 
+
+# How to run the code
+1. Download the code
+2. Open a command-line in the `src` folder.
+3.
+4.
+
 ## Details
  
 You've been hired by a construction firm to help build the "brain" for a set of elevators in a new building. Your task is to write the code that will control the elevators, and tell each elevator which floor to travel to next.
