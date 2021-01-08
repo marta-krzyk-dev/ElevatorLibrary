@@ -10,9 +10,13 @@ While the script is running you should keep track of how long each passenger wai
   request the elevator. There are an unknown number of passengers in the building, on unknown floors,
   and they will be requesting to go in random directions (up or down) to random floors, 
   at random times. */
-
+  const Elevator = require("./Elevator");
+  const Building = require("./Building");
+  const Logger = require("./Logger");
 
      async function Simulate(time, number_of_passengers) {
+
+       // logger = new Logger(true);
 
         //Validate time
         if (isNaN(time) || isNaN(number_of_passengers))
@@ -25,33 +29,60 @@ While the script is running you should keep track of how long each passenger wai
 
         const elevator1 = new Elevator("A", -1, 9)
         const elevator2 = new Elevator("B", 0, 10)
-        const skyscraper = new Building("Skyscraper Nano", -1, 10, {elevator1, elevator2});
+        const skyscraper = new Building("Skyscraper Nano", -1, 10, [elevator1, elevator2]);
 
         //Create 100 passengers
        
-        
-        //create 1 passanger - randomly choose start floor
-        travelTime = nearestElevator.Move(end_floor);
-
         const promise3 = new Promise((resolve, reject) => {
+
+            console.log("PROMISE STARTED");
             //create passanger 
             //const passanger = createPassager();
-        start_floor, end_floor = getRandomIntPair(min_floor, max_floor);
-        const nearestElevator = skyscraper.findNearestElevator(start_floor);
+        [start_floor, end_floor] = getRandomIntPair(min_floor, max_floor);
+        console.log("FLOORS: " + start_floor + ", " + end_floor);
+       // nearestElevator = skyscraper.findNearestElevator(start_floor);
         const requestTime = Date.now();
             //call elevator in building
-            elevator = skyscraper.findNearestElevator(start_floor, end_floor);
 
+            let elevator;
+            try {
+                elevator = skyscraper.findNearestElevator(start_floor, end_floor);
+            } catch(e) {
+                console.log(e);
+                reject(e);
+            }
+            console.log("Here goes elevator: " + elevator.name);
+            
+resolve(elevator);
             if (elevator instanceof Array) {
 
+            } else {
+                
             }
             
-            setTimeout(resolve, 100, 'foo');
+            if (elevator === 0) {
+               
+            }
+           // setTimeout(resolve, 100, 'foo');
+
+                    //create 1 passanger - randomly choose start floor
+            //travelTime = elevator.Move(end_floor);
           });
 
         //const tasks   = asyncThingsToDo.map([promise3]]); // Run all our tasks in parallel.
-const results = await Promise.all([promise3]);     // Gather up the results.
-results.forEach(x => console.log(x)); 
+results = await Promise.all([promise3, promise3, promise3])
+//.then(result => function () {
+   // console.log("Promise Resolved");
+ //   result.forEach(x => console.log(x)); 
+//})
+.catch(function () {
+    console.log("Promise Rejected");
+});     // Gather up the results.
+
+console.log("RESULTS: "); console.log(results);
+if (results !== undefined) {
+//results.forEach(x => console.log(x)); 
+}
 
         //When nearest Elevator is done, call it to the floor
         // Embark
@@ -62,7 +93,7 @@ results.forEach(x => console.log(x));
         //count the time for elevator job to finish
         //make sure the scenario for changing elevators (going from 10 floor to -1)
         //gather the result in arrays (passengers, times)
-        const timeElapsed = Date.now() - requestTime;
+        //const timeElapsed = Date.now() - requestTime;
         
      }
 
@@ -84,7 +115,7 @@ function getRandomIntPair(min, max) {
         b = randomInt(min, max);
     } while (a === b && min !== max)
 
-    return a, b;
+    return [a, b];
  }
 
  module.exports = Simulate;

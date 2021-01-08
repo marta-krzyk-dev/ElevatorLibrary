@@ -23,7 +23,7 @@ const simulationTimeInSec = 180;
 //2. Request Time
 //3. Destination floor
 //4. Waiting + travel time
-console.log(Simulate);
+
 results = Simulate(numberOfPassangers, simulationTimeInSec);
 
 console.log("END OF SIMULATION");

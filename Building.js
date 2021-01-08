@@ -3,10 +3,14 @@ class Building {
         this.name = name;
         this.min_floor = min_floor;
         this.max_floor = max_floor;
-        this.elevators = elevators;
-
+       
+        if (!(elevators instanceof Array)) {
+            throw "elevators parameter is not an array"
+        }
         if (elevators.length === 0)
             throw "There are no elevators set"
+            
+        this.elevators = elevators;
     }
 
     findNearestElevator(start_floor, dest_floor) {
@@ -17,7 +21,12 @@ class Building {
         let startElevator = null;
         let endElevator = null;
 
-        this.elevators.forEach(elevator => {
+        console.log("LOOKING at elevators: " + this.elevators);
+
+        for(let i =0; i <this.elevators.length; ++i) { //forEach(elevator => {
+            console.log(this.elevators[i]);
+            const elevator = this.elevators[i];
+            console.log("LOOKING at elevator: " + elevator);
             const canStartTravel = elevator.min_floor <= start_floor;
             const canEndTravel = elevator.max_floor >= dest_floor;
             //can pick up a passanger from start elevator
@@ -34,11 +43,11 @@ class Building {
             } else if (canEndTravel && endElevator === null && elevatorsCover(startElevator, elevator)) {
                 endElevator = elevator;
             }
-        });
+        };
 
         if (startElevator === null || endElevator === null) {
-            throw "There are no elevators that can take passanger from floor " + 
-                    start_floor + " to " + dest_floor;
+           return null;// throw "There are no elevators that can take passanger from floor " + 
+                //    start_floor + " to " + dest_floor;
         }
 
         return [startElevator, endElevator];
@@ -54,3 +63,5 @@ class Building {
         }
     } 
 }
+
+module.exports = Building;

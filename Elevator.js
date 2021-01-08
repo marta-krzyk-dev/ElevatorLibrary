@@ -1,7 +1,7 @@
 class Elevator {
     constructor(name, min_floor, max_floor, current_floor=min_floor) {
 
-        if (typeof(name) !== "string" || !str || /^\s*$/.test(name))
+        if (typeof(name) !== "string" || !name || /^\s*$/.test(name))
             throw "Invalid elevator name"
 
         this.name = name;
@@ -82,3 +82,5 @@ class Elevator {
         return travelTime;
     }
 }
+
+module.exports = Elevator;
