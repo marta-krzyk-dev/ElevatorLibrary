@@ -13,6 +13,7 @@ While the script is running you should keep track of how long each passenger wai
 
 //import ElevatorSimulator from './Simulator'; 
 const Simulate = require("./Simulator");
+
 //import {Simulate} from './Simulator'; 
 
 const numberOfPassangers = 100;

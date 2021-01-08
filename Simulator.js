@@ -11,6 +11,7 @@ While the script is running you should keep track of how long each passenger wai
   and they will be requesting to go in random directions (up or down) to random floors, 
   at random times. */
   const Elevator = require("./Elevator");
+  const ElevatorTravel = require("./ElevatorTravel");
   const Building = require("./Building");
   const Logger = require("./Logger");
 
@@ -24,9 +25,6 @@ While the script is running you should keep track of how long each passenger wai
 
         //Create 2 elevators
         const min_floor = -1, max_floor = 10;
-        const min_floor1 = -1, max_floor1 = 9;
-        const min_floor2 = 0, max_floor2 = 10;
-
         const elevator1 = new Elevator("A", -1, 9)
         const elevator2 = new Elevator("B", 0, 10)
         const skyscraper = new Building("Skyscraper Nano", -1, 10, [elevator1, elevator2]);
@@ -35,54 +33,58 @@ While the script is running you should keep track of how long each passenger wai
        
         const promise3 = new Promise((resolve, reject) => {
 
-            console.log("PROMISE STARTED");
-            //create passanger 
-            //const passanger = createPassager();
         [start_floor, end_floor] = getRandomIntPair(min_floor, max_floor);
         console.log("FLOORS: " + start_floor + ", " + end_floor);
-       // nearestElevator = skyscraper.findNearestElevator(start_floor);
+    
         const requestTime = Date.now();
             //call elevator in building
 
-            let elevator;
             try {
-                elevator = skyscraper.findNearestElevator(start_floor, end_floor);
+                let elevator = skyscraper.findNearestElevator(start_floor, end_floor);
+                
+                if (elevator instanceof Array) {
+                    //onboard elevator 1
+                    //travel in elevator 1
+                    //leave elevator 1
+                    //onboard elevator 2
+                    // travel in 2
+                    // leave 2
+
+                    resolve(new ElevatorTravel(start_floor, end_floor, requestTime, 1000));
+                } else {
+                    elevator.OpenDoor();
+                    elevator.CloseDoor();
+                    travelTime = elevator.Move(start_floor);
+                    travelTime += elevator.Move(end_floor);
+                   // elevator.OpenDoor();
+                   // elevator.CloseDoor();
+
+                    resolve(new ElevatorTravel(start_floor, end_floor, requestTime, travelTime));
+                }
             } catch(e) {
-                console.log(e);
                 reject(e);
             }
-            console.log("Here goes elevator: " + elevator.name);
-            
-resolve(elevator);
-            if (elevator instanceof Array) {
-
-            } else {
-                
-            }
-            
-            if (elevator === 0) {
-               
-            }
-           // setTimeout(resolve, 100, 'foo');
-
-                    //create 1 passanger - randomly choose start floor
+            // setTimeout(resolve, 100, 'foo');
+            //create 1 passanger - randomly choose start floor
             //travelTime = elevator.Move(end_floor);
           });
 
         //const tasks   = asyncThingsToDo.map([promise3]]); // Run all our tasks in parallel.
-results = await Promise.all([promise3, promise3, promise3])
+        results = await Promise.all([promise3, promise3, promise3])
 //.then(result => function () {
    // console.log("Promise Resolved");
  //   result.forEach(x => console.log(x)); 
 //})
-.catch(function () {
-    console.log("Promise Rejected");
-});     // Gather up the results.
+.catch(function (e) {
+    console.log("Promise Rejected: " + e);
+}).then(() => {
+    
 
-console.log("RESULTS: "); console.log(results);
 if (results !== undefined) {
 //results.forEach(x => console.log(x)); 
 }
+});     // Gather up the results.
+console.log("RESULTS: "); console.log(results);
 
         //When nearest Elevator is done, call it to the floor
         // Embark
@@ -97,10 +99,58 @@ if (results !== undefined) {
         
      }
 
-
  function createPassager() {
 
- }
+  /*  return new Promise(function(resolve, reject) {
+      $("#output").append("start");
+  
+      setTimeout(function() {
+        resolve();
+      }, 1000);
+    }).then(function() {
+      $("#output").append(" middle");
+      return " end";
+    });
+*/
+
+    return new Promise((resolve, reject) => {
+
+        [start_floor, end_floor] = getRandomIntPair(min_floor, max_floor);
+        console.log("FLOORS: " + start_floor + ", " + end_floor);
+    
+        const requestTime = Date.now();
+            //call elevator in building
+
+            try {
+                let elevator = skyscraper.findNearestElevator(start_floor, end_floor);
+                
+                if (elevator instanceof Array) {
+                    //onboard elevator 1
+                    //travel in elevator 1
+                    //leave elevator 1
+                    //onboard elevator 2
+                    // travel in 2
+                    // leave 2
+
+                    resolve(new ElevatorTravel(start_floor, end_floor, requestTime, 1000));
+                } else {
+                    elevator.OpenDoor();
+                    elevator.CloseDoor();
+                    let travelTime = elevator.Move(end_floor);
+                    elevator.OpenDoor();
+                    elevator.CloseDoor();
+
+                    resolve(new ElevatorTravel(start_floor, end_floor, requestTime, travelTime));
+                }
+            } catch(e) {
+                reject(e);
+            }
+            // setTimeout(resolve, 100, 'foo');
+            //create 1 passanger - randomly choose start floor
+            //travelTime = elevator.Move(end_floor);
+          });
+  }
+
 
  function randomInt(min, max) {
     min = Math.ceil(min);

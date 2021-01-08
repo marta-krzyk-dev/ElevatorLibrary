@@ -7,6 +7,7 @@ class Elevator {
         this.name = name;
         this.current_floor = current_floor;
         this.dest_floor = current_floor;
+        this.call_queue = [];
 
         if (isNaN(min_floor) || isNaN(max_floor) || isNaN(current_floor))
             throw "Invalid floor variable is not a number"
@@ -26,23 +27,23 @@ class Elevator {
         this.is_busy = false;
     }
 
-    OpenDoors() {
+    OpenDoor() {
         if (this.door_is_blocked) {
-            console.log(`Elevator ${this.name} - doors are locked until reset`);
+            console.log(`Elevator ${this.name} - door is locked until reset`);
         }
         else {
             this.door_is_closed = false;
-            console.log(`Elevator ${this.name} closes doors`);
+            console.log(`Elevator ${this.name} opens door`);
         }
     }
 
-    CloseDoors() {
+    CloseDoor() {
         if (this.door_is_blocked) {
-            console.log(`Elevator ${this.name} - doors are locked until reset`);
+            console.log(`Elevator ${this.name} - door is locked until reset`);
         }
         else {
             this.door_is_closed = true;
-            console.log(`Elevator ${this.name} opens doors`);
+            console.log(`Elevator ${this.name} closes door`);
         }
     }
 
@@ -67,10 +68,14 @@ class Elevator {
     // Returns number of floors (seconds) to move
     Move(destination_floor) {
 
+      //  if (this.is_busy) {
+     //       return;
+     //   }
+
         console.log(`Elevator ${this.name} attempts to move from ${this.current_floor} to ${destination_floor}`)
 
-        if (NaN(destination_floor))
-            throw ("Destinatio floor is not a number")
+        if (isNaN(destination_floor))
+            throw ("Parameter destination_floor is not a number")
 
         if (destination_floor > this.max_floor || destination_floor < this.min_floor)
             throw "Floor outside of reach";
@@ -78,7 +83,8 @@ class Elevator {
         this.busy = true;
         this.dest_floor = destination_floor;
         const travelTime = Math.abs(destination_floor - this.current_floor);
-        setTimeout(function(){ this.is_busy = false; }, travelTime * 1000);
+       // setTimeout(function(){ this.is_busy = false; }, travelTime * 1000);
+
         return travelTime;
     }
 }

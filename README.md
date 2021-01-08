@@ -10,6 +10,10 @@ TODO:
 # How to run the code
 1. Download the code
 2. Open a command-line in the folder where `SimulatorTest.js` file is.
+3. In Visual Studio Code open up `SimulatorTest.js` and use `Ctrl + Alt + N`.
+
+OR 
+
 3. Make sure node is installed. Run `node -v`.
 If it's not found, install node. You can do it by running `brew install node`.
 4. Run `node SimulatorTest.js`
