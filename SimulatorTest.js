@@ -16,7 +16,7 @@ const Simulate = require("./Simulator");
 
 //import {Simulate} from './Simulator'; 
 
-const numberOfPassangers = 100;
+const numberOfPassangers = 1;
 const simulationTimeInSec = 180;
 
 //Results are 100 item:

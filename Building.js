@@ -21,6 +21,7 @@ class Building {
         let startElevator = null;
         let endElevator = null;
 
+        //
         for(let i =0; i <this.elevators.length; ++i) {
 
             const elevator = this.elevators[i];
@@ -48,16 +49,16 @@ class Building {
 
         return [startElevator, endElevator];
     }
-
     //This method checks if there are common floor between the elevators
-    elevatorsCover(elevator1, elevator2) {
-        if (elevator1.min_floor > elevator2.max_floor ||
-            elevator2.min_floor > elecator1.max_floor) {
-            return false;
-        } else {
-            return true;
-        }
-    } 
+}
+
+function elevatorsCover(elevator1, elevator2) {
+    if (elevator1.min_floor > elevator2.max_floor ||
+        elevator2.min_floor > elevator1.max_floor) {
+        return false;
+    } else {
+        return true;
+    }
 }
 
 module.exports = Building;

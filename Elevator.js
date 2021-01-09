@@ -25,37 +25,46 @@ class Elevator {
         this.door_is_blocked = false;
 
         this.is_busy = false;
+
+        setInterval(() => this.executeQueue());
     }
 
     OpenDoor() {
         if (this.door_is_blocked) {
-            console.log(`Elevator ${this.name} - door is locked until reset`);
+            console.log(`Elevator ${this.name} - door is locked until reset on floor ${this.current_floor}`);
         }
         else {
             this.door_is_closed = false;
-            console.log(`Elevator ${this.name} opens door`);
+            console.log(`Elevator ${this.name} opens door on floor ${this.current_floor}`);
         }
     }
 
     CloseDoor() {
         if (this.door_is_blocked) {
-            console.log(`Elevator ${this.name} - door is locked until reset`);
+            console.log(`Elevator ${this.name} - door is locked until reset on floor ${this.current_floor}`);
         }
         else {
             this.door_is_closed = true;
-            console.log(`Elevator ${this.name} closes door`);
+            console.log(`Elevator ${this.name} closes door on floor ${this.current_floor}`);
         }
     }
 
-    Emergency() {
+    Emergency() {        
+        
         console.log(`Elevator ${this.name} - emergency button was pushed`)
+        clearInterval(this.interval);
+        this.OpenDoors();
+
+       //----weystarczy to?
+        this.emergency = true;
+
         //go to the nearest floor
-        if (this.current_floor == this.min_floor)
+      /*  if (this.current_floor == this.min_floor)
             this.Move(this.current_floor + 1); //Go up
         else
             this.Move(this.current_floor - 1); //Go down
-
-        this.OpenDoors();
+*/
+      
         this.door_is_blocked = true;
     }
 
@@ -65,13 +74,29 @@ class Elevator {
         this.CloseDoors();
     }
 
+    RequestTravel(start_floor, destination_floor) {
+       
+       // console.log(`Request ${this.name} to travel from ${start_floor} to ${destination_floor}`)
+    
+        this.call_queue.push(start_floor);
+        this.call_queue.push(destination_floor);
+            
+    }
+
     // Returns number of floors (seconds) to move
-    Move(destination_floor) {
+    Move(start_floor, destination_floor) {
 
-      //  if (this.is_busy) {
-     //       return;
-     //   }
+        console.log(`Elevator ${this.name} attempts to move from ${this.current_floor} to ${destination_floor}`)
 
+        if (this.is_busy) {
+            this.call_queue.push(start_floor);
+            this.call_queue.push(destination_floor);
+        } else {
+            this.executeQueue();
+        }
+    }
+
+    Move2(destination_floor) {
         console.log(`Elevator ${this.name} attempts to move from ${this.current_floor} to ${destination_floor}`)
 
         if (isNaN(destination_floor))
@@ -86,6 +111,46 @@ class Elevator {
        // setTimeout(function(){ this.is_busy = false; }, travelTime * 1000);
 
         return travelTime;
+    }
+
+    
+    MoveTo(next_floor) {
+        if (next_floor < this.min_floor || next_floor > this.max_floor) {
+            throw "ILLEGAL FLOOR NUMBER " + next_floor;
+        } else {
+            this.current_floor = next_floor;
+        }
+    }
+
+    executeQueue() {
+        while (this.call_queue.length > 0) {
+            
+            this.is_busy = true; //In production code, this variable needs to be thread-safe
+         
+            const destination_floor = this.call_queue.pop();
+            const time = Math.abs(destination_floor - this.current_floor);
+            let direction = destination_floor > this.current_floor ? 1 : -1;
+
+            console.log("time: " + time +" direc: " + direction);
+
+            setTimeout(() => { this.is_busy = false; console.log("busy - false"); }, 1000 * time);
+            
+           // for (let i = 0; i < time; ++i) {
+               // console.log(`i = ${i}   ; time == ${time}`)
+                this.interval = setTimeout(() => {
+                    console.log(`Interval. Elevator ${this.name} goes from ${this.current_floor} to ${this.current_floor + direction}`);
+                    
+                    this.MoveTo(this.current_floor += direction);
+                    //if (this.current_floor == destination_floor || i == time) {
+                            //clearInterval(this.interval);
+                    // }
+                }, time * 1000);  
+               // clearInterval(this.interval);
+            //} 
+        
+        //clearInterval(this.interval);
+        this.is_busy = false;
+        } 
     }
 }
 

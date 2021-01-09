@@ -15,7 +15,47 @@ While the script is running you should keep track of how long each passenger wai
   const Building = require("./Building");
   const Logger = require("./Logger");
 
-     async function Simulate(time, number_of_passengers) {
+  async function Simulate(number_of_passengers, time) {
+
+    // logger = new Logger(true);
+
+     //Validate time
+     if (isNaN(time) || isNaN(number_of_passengers))
+         throw ("Invalid parameter(s)")
+
+     //Create 2 elevators
+     const min_floor = -1, max_floor = 10;
+     const elevator1 = new Elevator("A", -1, 9)
+     const elevator2 = new Elevator("B", 0, 10)
+     const skyscraper = new Building("Skyscraper Nano", min_floor, max_floor, [elevator1, elevator2]);
+
+     //Create pairs of [start_floor, end_floor],
+     //e.g. [ [ 10, 4 ], [ 7, -1 ], [ 4, 7 ] ]
+     travels = []
+     for (let i = 0; i < number_of_passengers; ++i) {
+        travels.push(getRandomIntPair(3, 9 /*min_floor, max_floor*/));
+     }
+     
+     console.log(travels);
+
+     for (let i = 0; i < number_of_passengers; ++i) {
+        floors = travels[i];
+        elevator = skyscraper.findNearestElevator(floors[0], floors[1]);
+
+        console.log(`Found elevator: ` + elevator)
+        //if it's a single elevator, add the travel to its queue
+        elevator.RequestTravel(floors[0], floors[1]);
+     }
+
+     elevator1.executeQueue();
+    // elevator2.executeQueue();
+ }
+
+  // Generates array of 2-element arrays
+
+
+
+     async function Simulate2(time, number_of_passengers) {
 
        // logger = new Logger(true);
 
@@ -52,10 +92,10 @@ While the script is running you should keep track of how long each passenger wai
 
                     resolve(new ElevatorTravel(start_floor, end_floor, requestTime, 1000));
                 } else {
-                    elevator.OpenDoor();
-                    elevator.CloseDoor();
-                    travelTime = elevator.Move(start_floor);
-                    travelTime += elevator.Move(end_floor);
+                   // elevator.OpenDoor();
+                   // elevator.CloseDoor();
+                    travelTime = elevator.Move(start_floor, end_floor);
+                   // travelTime += elevator.Move(end_floor);
                    // elevator.OpenDoor();
                    // elevator.CloseDoor();
 
