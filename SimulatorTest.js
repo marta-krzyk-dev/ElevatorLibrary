@@ -25,6 +25,12 @@ const simulationTimeInSec = 180;
 //3. Destination floor
 //4. Waiting + travel time
 
+let array = [1];
+array.push(2);
+console.log("here goes -- " + array.shift());//getting 1
+array = [1, 2];
+console.log("here goes -- " + array.pop());//getting 2
+
 results = Simulate(numberOfPassangers, simulationTimeInSec);
 
 console.log("END OF SIMULATION");

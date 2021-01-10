@@ -81,6 +81,7 @@ class Elevator {
         this.call_queue.push(start_floor);
         this.call_queue.push(destination_floor);
             
+        this.executeQueue();
     }
 
     // Returns number of floors (seconds) to move
@@ -122,34 +123,69 @@ class Elevator {
         }
     }
 
+    MoveUp() {
+        this.MoveTo(this.current_floor + 1);
+    }
+
+    MoveDown() {
+        this.MoveTo(this.current_floor - 1);
+    }
+
+    OnboardPassager() {
+        //this.passanger_in = true;
+        this.OpenDoor();
+        this.CloseDoor();
+    }
+
     executeQueue() {
         while (this.call_queue.length > 0) {
             
+            console.log("Execuing queue - " + this.call_queue)
             this.is_busy = true; //In production code, this variable needs to be thread-safe
-         
-            const destination_floor = this.call_queue.pop();
-            const time = Math.abs(destination_floor - this.current_floor);
-            let direction = destination_floor > this.current_floor ? 1 : -1;
+            this.destination_floor = this.call_queue.shift();
 
-            console.log("time: " + time +" direc: " + direction);
+            console.log(`Trying to go to the floor ${this.destination_floor}`)
 
-            setTimeout(() => { this.is_busy = false; console.log("busy - false"); }, 1000 * time);
+            const time = Math.abs(this.destination_floor - this.current_floor);
             
-           // for (let i = 0; i < time; ++i) {
-               // console.log(`i = ${i}   ; time == ${time}`)
-                this.interval = setTimeout(() => {
-                    console.log(`Interval. Elevator ${this.name} goes from ${this.current_floor} to ${this.current_floor + direction}`);
-                    
-                    this.MoveTo(this.current_floor += direction);
-                    //if (this.current_floor == destination_floor || i == time) {
-                            //clearInterval(this.interval);
-                    // }
-                }, time * 1000);  
+            if (time == 0) {
+                console.log(`we are on the right floor; lets continue`)
+               this.OnboardPassager();
+               continue;
+            } 
+
+         //   this.MoveTo(this.current_floor + direction);
+           // this.call_queue.push(this.current_floor + direction);
+           // setTimeout(() => { this.is_busy = false; console.log("busy - false"); }, 1000 * time);
+           
+
+                this.interval = setInterval(() => {
+                    const direction = (this.destination_floor > this.current_floor) ? 1 : -1;
+                    console.log(`Elevator ${this.name} goes from ${this.current_floor} to ${this.current_floor + direction}.`);
+                
+                    if (this.current_floor == this.destination_floor) {
+                            //
+                            //this.OpenDoor();
+                            //this.CloseDoor();
+                            console.log("(this.current_floor == destination_floor) ");
+                            this.OnboardPassager();
+                           // clearInterval(this.interval); 
+                            clearInterval();
+                            this.is_busy = false;   
+                     } else {
+                        this.MoveTo(this.current_floor + direction);
+                     }
+                  //  if (destination_floor > this.current_floor) {
+                  //      this.MoveUp()
+                  //  } else {
+                  //      this.MoveDown()
+                 //   } 
+                }, 1000);  
                // clearInterval(this.interval);
-            //} 
+            
         
-        //clearInterval(this.interval);
-        this.is_busy = false;
+        clearInterval()
+        this.is_busy = false;   
         } 
     }
 }

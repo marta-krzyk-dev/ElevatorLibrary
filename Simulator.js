@@ -31,10 +31,10 @@ While the script is running you should keep track of how long each passenger wai
 
      //Create pairs of [start_floor, end_floor],
      //e.g. [ [ 10, 4 ], [ 7, -1 ], [ 4, 7 ] ]
-     travels = []
-     for (let i = 0; i < number_of_passengers; ++i) {
-        travels.push(getRandomIntPair(3, 9 /*min_floor, max_floor*/));
-     }
+     travels = [[1,3]]
+   //  for (let i = 0; i < number_of_passengers; ++i) {
+   //     travels.push(getRandomIntPair(3, 9 /*min_floor, max_floor*/));
+   //  }
      
      console.log(travels);
 
